@@ -11,10 +11,10 @@ var minimumIntervalFinder = new MinimumIntervalFinder();
 
 var minimumInterval = minimumIntervalFinder.FindMinimumInterval(-2, function);
 
-Console.WriteLine($"{minimumInterval.LeftPoint} {minimumInterval.RightPoint}");
+Console.WriteLine($"{minimumInterval.Left} {minimumInterval.Right}");
 
-minimumInterval.RightPoint = 20;
-minimumInterval.LeftPoint = -2;
+minimumInterval.Right = 20;
+minimumInterval.Left = -2;
 
 //var dichotomyMethod = new DichotomyMethod();
 

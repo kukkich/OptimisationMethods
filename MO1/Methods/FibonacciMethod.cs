@@ -7,8 +7,8 @@ public class FibonacciMethod : IExtremumSearchMethod
 {
     public double FindMinimum(Interval minimumInterval, Func<double, double> function)
     {
-        var a = minimumInterval.LeftPoint;
-        var b = minimumInterval.RightPoint;
+        var a = minimumInterval.Left;
+        var b = minimumInterval.Right;
 
         var k = 1;
 

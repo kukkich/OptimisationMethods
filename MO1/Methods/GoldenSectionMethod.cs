@@ -6,8 +6,8 @@ public class GoldenSectionMethod : IExtremumSearchMethod
 {
     public double FindMinimum(Interval minimumInterval, Func<double, double> function)
     {
-        var a = minimumInterval.LeftPoint;
-        var b = minimumInterval.RightPoint;
+        var a = minimumInterval.Left;
+        var b = minimumInterval.Right;
 
         var x1 = a + 0.381966011d * (b - a);
         var x2 = b - 0.381966011d * (b - a);

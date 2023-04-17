@@ -6,8 +6,8 @@ public class DichotomyMethod : IExtremumSearchMethod
 {
     public double FindMinimum(Interval minimumInterval, Func<double, double> function)
     {
-        var a = minimumInterval.LeftPoint;
-        var b = minimumInterval.RightPoint;
+        var a = minimumInterval.Left;
+        var b = minimumInterval.Right;
 
         var x1 = (a + b - MethodsConfig.Delta) / 2;
         var x2 = (a + b + MethodsConfig.Delta) / 2;

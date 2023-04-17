@@ -40,15 +40,15 @@ public class MinimumIntervalFinder
             h *= 2;
             xNext = xPrev + h;
 
-            minimumInterval.LeftPoint = xPrev;
-            minimumInterval.RightPoint = xNext;
+            minimumInterval.Left = xPrev;
+            minimumInterval.Right = xNext;
 
             IterationInformer.Inform(i, xPrev, function(xPrev));
         }
 
         IterationInformer.Inform(i, xNext, function(xNext));
 
-        minimumInterval.LeftPoint = xPrev - h / 2;
+        minimumInterval.Left = xPrev - h / 2;
 
         return minimumInterval;
     }

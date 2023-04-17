@@ -2,39 +2,39 @@
 
 public record struct Interval
 {
-    private double _leftPoint;
-    private double _rightPoint;
+    private double _left;
+    private double _right;
 
-    public Interval(double leftPoint, double rightPoint)
+    public Interval(double left, double right)
     {
-        _leftPoint = leftPoint;
-        _rightPoint = rightPoint;
+        _left = left;
+        _right = right;
     }
 
-    public double LeftPoint
+    public double Left
     {
-        get => _leftPoint;
+        get => _left;
         set
         {
-            if (_rightPoint - value > 0) _leftPoint = value;
+            if (_right - value > 0) _left = value;
             else
             {
-                _rightPoint = _leftPoint;
-                _leftPoint = value;
+                _right = _left;
+                _left = value;
             }
         }
     }
 
-    public double RightPoint
+    public double Right
     {
-        get => _rightPoint;
+        get => _right;
         set
         {
-            if (value - _leftPoint > 0) _rightPoint = value;
+            if (value - _left > 0) _right = value;
             else
             {
-                _rightPoint = _leftPoint;
-                _leftPoint = value;
+                _right = _left;
+                _left = value;
             }
         }
     }
