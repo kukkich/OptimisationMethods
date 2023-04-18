@@ -11,4 +11,8 @@
     <ProjectReference Include="..\MO1\MO1.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Core\" />
+  </ItemGroup>
+
 </Project>

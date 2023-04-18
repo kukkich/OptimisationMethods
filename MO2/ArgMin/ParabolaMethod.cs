@@ -22,7 +22,5 @@ public class ParabolaMethod : IArgMinSeeker
         var b = (y2 - y1) / (x2 - x1) - a * (x1 + x2);
 
         return -1d * b / (2d * a);
-
-        throw new NotImplementedException();
     }
 }

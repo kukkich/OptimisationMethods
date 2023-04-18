@@ -12,7 +12,6 @@ public class NewtonMethod
 
     private readonly Func<Point, double> _func;
     private readonly IArgMinSeeker _argMinSeeker;
-    private readonly MinimumIntervalFinder _intervalFinder = new();
 
     public NewtonMethod(Func<Point, double> func, IArgMinSeeker argMinSeeker)
     {
