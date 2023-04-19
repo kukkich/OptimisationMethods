@@ -1,5 +1,4 @@
-﻿using MO1;
-using MO2.ArgMin;
+﻿using MO2.ArgMin;
 using static System.Math;
 
 namespace MO2;
@@ -23,16 +22,26 @@ public class NewtonMethod
     {
 
         var grad = MathHelper.Gradient(_func, start);
-        var inverseHesse = new HesseMatrix(_func, start).Inverse();
+
+        var hesse = new HesseMatrix(_func, start);
+
+        var inverseHesse = hesse.Inverse();
 
         var direction = inverseHesse.Multiply(grad);
 
         var lambda = _argMinSeeker.Find(l => _func(start - l * direction));
 
         var nextPoint = start - lambda * direction;
+
         var gradNext = MathHelper.Gradient(_func, nextPoint);
 
-        Console.WriteLine($"({start.X:F3}, {start.Y:F3}) + {lambda:F3}*({direction.X:F3}, {direction.Y:F3}) ");
+        IterationInformer.Inform(1, nextPoint, _func(nextPoint), direction, lambda, Abs(nextPoint.X - start.X),
+            Abs(nextPoint.Y - start.Y), Abs(_func(nextPoint) - _func(start)),
+            Acos((start.X * direction.X + start.Y * direction.Y) /
+                 Sqrt(start.X * start.X + start.Y * start.Y) *
+                 Sqrt(direction.X * direction.X + direction.Y * direction.Y)), gradNext, hesse);
+
+        //Console.WriteLine($"({start.X:F3}, {start.Y:F3}) + {lambda:F3}*({direction.X:F3}, {direction.Y:F3}) ");
 
         while (!ShouldStop(start, nextPoint, gradNext))
         {
@@ -40,16 +49,25 @@ public class NewtonMethod
             grad = gradNext;
             //Console.WriteLine(start);
 
-            grad = MathHelper.Gradient(_func, start);
-            inverseHesse = new HesseMatrix(_func, start).Inverse();
+            hesse = new HesseMatrix(_func, start);
+
+            inverseHesse = hesse.Inverse();
 
             direction = inverseHesse.Multiply(grad);
 
             lambda = _argMinSeeker.Find(l => _func(start - l * direction));
 
             nextPoint = start - lambda * direction;
+
             gradNext = MathHelper.Gradient(_func, nextPoint);
-            Console.WriteLine($"({start.X:F3}, {start.Y:F3}) + {lambda:F3}*({direction.X:F3}, {direction.Y:F3}) ");
+
+            IterationInformer.Inform(1, start, _func(start), direction, lambda, Abs(nextPoint.X - start.X),
+                Abs(nextPoint.Y - start.Y), Abs(_func(nextPoint) - _func(start)),
+                Acos((start.X * direction.X + start.Y * direction.Y) /
+                     Sqrt(start.X * start.X + start.Y * start.Y) *
+                     Sqrt(direction.X * direction.X + direction.Y * direction.Y)), grad, hesse);
+
+            //Console.WriteLine($"({start.X:F3}, {start.Y:F3}) + {lambda:F3}*({direction.X:F3}, {direction.Y:F3}) ");
         }
 
         return nextPoint;

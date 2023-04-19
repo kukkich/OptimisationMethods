@@ -1,7 +1,10 @@
 ﻿using MO2;
 using MO2.ArgMin;
+using System.Globalization;
 using static System.Console;
 using static System.Math;
+
+Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
 IArgMinSeeker method = new ParabolaMethod();
 
