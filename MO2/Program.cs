@@ -1,14 +1,14 @@
-﻿using MO2;
+﻿using MO1;
+using MO2;
 using MO2.ArgMin;
 using System.Globalization;
-using MO1;
 using static System.Console;
 using static System.Math;
 
 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
 IArgMinSeeker method = new ParabolaMethod();
-method = new FibonacciMethod();
+//method = new FibonacciMethod();
 
 Func<Point, double> function = p =>
 {
@@ -19,10 +19,10 @@ Func<Point, double> function = p =>
 function = p =>
 {
     var (x, y) = p;
-    return 100*Pow(y - Pow(x, 2), 2) + Pow(1d - x, 2);
+    return 100 * Pow(y - Pow(x, 2), 2) + Pow(1d - x, 2);
 };
 
-var point = new Point(0, 0);
+var point = new Point(2, 2);
 
 var newtonMethod = new NewtonMethod(function, method);
 var pMin = newtonMethod.Find(point);

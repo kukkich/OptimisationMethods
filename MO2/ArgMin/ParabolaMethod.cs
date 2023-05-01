@@ -1,6 +1,4 @@
 ﻿using MO1;
-using MO1.Core;
-using MO1.Methods;
 
 namespace MO2.ArgMin;
 

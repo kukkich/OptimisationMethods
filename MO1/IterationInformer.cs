@@ -1,8 +1,4 @@
-﻿using System.Drawing;
-using System.Numerics;
-using MO1.Core;
-
-namespace MO1;
+﻿namespace MO1;
 
 public class IterationInformer
 {

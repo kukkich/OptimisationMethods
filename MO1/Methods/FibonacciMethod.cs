@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using MO1.Core;
+﻿using MO1.Core;
 
 namespace MO1.Methods;
 
@@ -12,7 +11,7 @@ public class FibonacciMethod : IExtremumSearchMethod
 
         var k = 1;
 
-        for (; (b - a) / MethodsConfig.Eps > CalcFibonacciNumber(k); ++k);
+        for (; (b - a) / MethodsConfig.Eps > CalcFibonacciNumber(k); ++k) ;
 
         var n = k - 2;
 

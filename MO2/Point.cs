@@ -4,7 +4,7 @@ namespace MO2;
 
 public readonly record struct Point(double X, double Y)
 {
-    public double Norm => Math.Sqrt(X * X + Y * Y); 
+    public double Norm => Math.Sqrt(X * X + Y * Y);
 
     public static Point operator *(Point point, double coef)
     {

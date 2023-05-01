@@ -37,7 +37,7 @@ public class MinimumIntervalFinder
         IterationInformer.Inform(1, xPrev, function(xPrev));
 
         var i = 2;
-        
+
         for (; function(xPrev) > function(xNext); i++)
         {
             MethodsConfig.FCalc++;

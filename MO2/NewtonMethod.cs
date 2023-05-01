@@ -6,9 +6,9 @@ namespace MO2;
 
 public class NewtonMethod
 {
-    public const double EpsF = 1e-6;
-    public const double EpsX = 1e-6;
-    public const double EpsGrad = 1e-6;
+    public const double EpsF = 1e-3;
+    public const double EpsX = 1e-3;
+    public const double EpsGrad = 1e-3;
 
     private readonly Func<Point, double> _func;
     private readonly IArgMinSeeker _argMinSeeker;

@@ -1,7 +1,5 @@
 ﻿using MO1;
-using MO1.Core;
 using System.Globalization;
-using MO1.Methods;
 
 Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
