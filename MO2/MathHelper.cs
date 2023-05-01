@@ -1,8 +1,8 @@
 ﻿namespace MO2;
 
-public static class MathHelper 
+public static class MathHelper
 {
-    private const double DerivativeStep = 1e-13;
+    private const double DerivativeStep = 1e-15;
 
     public static Point Gradient(Func<Point, double> f, Point p)
     {

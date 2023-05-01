@@ -1,13 +1,14 @@
-﻿using MO2.ArgMin;
+﻿using MO1;
+using MO2.ArgMin;
 using static System.Math;
 
 namespace MO2;
 
 public class NewtonMethod
 {
-    public const double EpsF = 1e-14;
-    public const double EpsX = 1e-14;
-    public const double EpsGrad = 1e-14;
+    public const double EpsF = 1e-6;
+    public const double EpsX = 1e-6;
+    public const double EpsGrad = 1e-6;
 
     private readonly Func<Point, double> _func;
     private readonly IArgMinSeeker _argMinSeeker;
@@ -23,9 +24,13 @@ public class NewtonMethod
 
         var grad = MathHelper.Gradient(_func, start);
 
+        MethodsConfig.FCalc = 2;
+
         var hesse = new HesseMatrix(_func, start);
 
         var inverseHesse = hesse.Inverse();
+
+        MethodsConfig.FCalc += 8;
 
         var direction = inverseHesse.Multiply(grad);
 
@@ -33,23 +38,26 @@ public class NewtonMethod
 
         var nextPoint = start - lambda * direction;
 
+        var i = 1;
+
+        IterationInformer.Inform(i, nextPoint, _func(nextPoint), direction, lambda, Abs(nextPoint.X - start.X),
+            Abs(nextPoint.Y - start.Y), Abs(_func(nextPoint) - _func(start)),
+            Acos((nextPoint.X * direction.X + nextPoint.Y * direction.Y) /
+                 Sqrt(nextPoint.X * nextPoint.X + nextPoint.Y * nextPoint.Y) *
+                 Sqrt(direction.X * direction.X + direction.Y * direction.Y)), grad, hesse);
+
         var gradNext = MathHelper.Gradient(_func, nextPoint);
 
-        IterationInformer.Inform(1, nextPoint, _func(nextPoint), direction, lambda, Abs(nextPoint.X - start.X),
-            Abs(nextPoint.Y - start.Y), Abs(_func(nextPoint) - _func(start)),
-            Acos((start.X * direction.X + start.Y * direction.Y) /
-                 Sqrt(start.X * start.X + start.Y * start.Y) *
-                 Sqrt(direction.X * direction.X + direction.Y * direction.Y)), gradNext, hesse);
-
-        //Console.WriteLine($"({start.X:F3}, {start.Y:F3}) + {lambda:F3}*({direction.X:F3}, {direction.Y:F3}) ");
+        MethodsConfig.FCalc += 2;
 
         while (!ShouldStop(start, nextPoint, gradNext))
         {
             start = nextPoint;
             grad = gradNext;
-            //Console.WriteLine(start);
 
             hesse = new HesseMatrix(_func, start);
+
+            MethodsConfig.FCalc += 8;
 
             inverseHesse = hesse.Inverse();
 
@@ -59,15 +67,15 @@ public class NewtonMethod
 
             nextPoint = start - lambda * direction;
 
-            gradNext = MathHelper.Gradient(_func, nextPoint);
-
-            IterationInformer.Inform(1, start, _func(start), direction, lambda, Abs(nextPoint.X - start.X),
+            IterationInformer.Inform(++i, nextPoint, _func(nextPoint), direction, lambda, Abs(nextPoint.X - start.X),
                 Abs(nextPoint.Y - start.Y), Abs(_func(nextPoint) - _func(start)),
-                Acos((start.X * direction.X + start.Y * direction.Y) /
-                     Sqrt(start.X * start.X + start.Y * start.Y) *
+                Acos((nextPoint.X * direction.X + nextPoint.Y * direction.Y) /
+                     Sqrt(nextPoint.X * nextPoint.X + nextPoint.Y * nextPoint.Y) *
                      Sqrt(direction.X * direction.X + direction.Y * direction.Y)), grad, hesse);
 
-            //Console.WriteLine($"({start.X:F3}, {start.Y:F3}) + {lambda:F3}*({direction.X:F3}, {direction.Y:F3}) ");
+            gradNext = MathHelper.Gradient(_func, nextPoint);
+
+            MethodsConfig.FCalc += 2;
         }
 
         return nextPoint;

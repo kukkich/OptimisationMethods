@@ -19,8 +19,8 @@ public record struct Interval
             if (_right - value > 0) _left = value;
             else
             {
-                _right = _left;
-                _left = value;
+                _left = _right;
+                _right = value;
             }
         }
     }

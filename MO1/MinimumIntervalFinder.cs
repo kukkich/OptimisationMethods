@@ -12,6 +12,8 @@ public class MinimumIntervalFinder
 
         var fValue = function(xPrev);
 
+        MethodsConfig.FCalc++;
+
         if (fValue > function(xPrev + MethodsConfig.MinimumIntervalDelta))
         {
             xNext = xPrev + MethodsConfig.MinimumIntervalDelta;
@@ -21,7 +23,10 @@ public class MinimumIntervalFinder
         {
             xNext = xPrev - MethodsConfig.MinimumIntervalDelta;
             h = -MethodsConfig.MinimumIntervalDelta;
+            MethodsConfig.FCalc++;
         }
+
+        MethodsConfig.FCalc++;
 
         xPrev = xNext;
         h *= 2;
@@ -33,9 +38,10 @@ public class MinimumIntervalFinder
 
         var i = 2;
         
-
         for (; function(xPrev) > function(xNext); i++)
         {
+            MethodsConfig.FCalc++;
+
             xPrev = xNext;
             h *= 2;
             xNext = xPrev + h;

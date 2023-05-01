@@ -20,23 +20,29 @@ public class BFGS
 
         var i = 1;
 
-        Point gradF;
+        var gradF = MathHelper.Gradient(function, point);
+
+        MethodsConfig.FCalc = 2;
 
         do
         {
-            gradF = MathHelper.Gradient(function, point);
-
             var direction = eta * gradF;
 
             var lambda = _argMinSeeker.Find(l => function(point - l * direction));
 
-            //Console.WriteLine($"({point.X:F3}, {point.Y:F3}) + {lambda:F3}*({direction.X:F3}, {direction.Y:F3}) ");
-
             var nextPoint = point - lambda * direction;
+
+            IterationInformer.Inform(i, nextPoint, function(nextPoint), direction, lambda, Abs(nextPoint.X - point.X),
+                Abs(nextPoint.Y - point.Y), Abs(function(nextPoint) - function(point)),
+                Acos((nextPoint.X * direction.X + nextPoint.Y * direction.Y) /
+                     Sqrt(nextPoint.X * nextPoint.X + nextPoint.Y * nextPoint.Y) *
+                     Sqrt(direction.X * direction.X + direction.Y * direction.Y)), gradF, eta);
 
             var deltaX = nextPoint - point;
 
             var gradFNext = MathHelper.Gradient(function, nextPoint);
+
+            MethodsConfig.FCalc += 2;
 
             var deltaG = gradFNext - gradF;
 
@@ -44,17 +50,12 @@ public class BFGS
 
             eta += deltaEta;
 
-            IterationInformer.Inform(i, nextPoint, function(nextPoint), direction, lambda, Abs(nextPoint.X - point.X),
-                Abs(nextPoint.Y - point.Y), Abs(function(nextPoint) - function(point)),
-                Acos((point.X * direction.X + point.Y * direction.Y) /
-                     Sqrt(point.X * point.X + point.Y * point.Y) *
-                     Sqrt(direction.X * direction.X + direction.Y * direction.Y)), gradFNext, eta);
-
             point = nextPoint;
 
             gradF = gradFNext;
 
             i++;
+
         } while (gradF.Norm > MethodsConfig.GradEps);
 
         return point;
