@@ -22,7 +22,7 @@ function = p =>
     return 100 * Pow(y - Pow(x, 2), 2) + Pow(1d - x, 2);
 };
 
-var point = new Point(2, 2);
+var point = new Point(0, 0);
 
 var newtonMethod = new NewtonMethod(function, method);
 var pMin = newtonMethod.Find(point);

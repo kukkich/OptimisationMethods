@@ -14,6 +14,10 @@ public readonly record struct Point(double X, double Y)
     {
         return new Point(point.X * coef, point.Y * coef);
     }
+    public static Point operator /(Point point, double coef)
+    {
+        return point * (1 / coef);
+    }
     public static Matrix operator *(Point point1, Point point2)
     {
         return new Matrix(new[,]
