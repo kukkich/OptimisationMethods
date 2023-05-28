@@ -13,17 +13,21 @@ public class Barrier
     }
 
     public Point FindMinimum(Func<Point, double> function, Func<Point, double> g, Point point,
-        Point penalties)
+        double r)
     {
-        penalties *= 2;
+        var i = 0;
+        r *= 2;
         do
         {
-            penalties /= 2;
-            Func<Point, double> q = x => function(x) + penalties.X * g(x) + penalties.Y * g(x);
+            r /= 2;
+            double Q(Point x) => function(x) + r * g(x);
 
-            point = _hookeJeeves.FindMinimum(q, point, 1e-19);
+            point = _hookeJeeves.FindMinimum(Q, point);
+            i++;
 
-        } while (g(point) > MethodsConfig.Eps);
+        } while (Math.Abs(r * g(point)) > MethodsConfig.EpsPB);
+        IterationInformer.Inform(i, MethodsConfig.FCalc, point, function(point));
+        MethodsConfig.FCalc = 0;
         return point;
     }
 }

@@ -13,17 +13,19 @@ public class Penalty
     }
 
     public Point FindMinimum(Func<Point, double> function, Func<Point, double> h, Func<Point, double> g, Point point,
-        Point penalties)
+        double r)
     {
-        penalties /= 2;
+        var i = 0;
         do
         {
-            penalties *= 2;
-            Func<Point, double> q = x => function(x) + penalties.X * h(x) + penalties.Y * g(x);
+            double Q(Point x) => function(x) + r * g(x) + r * h(x);
 
-            point = _hookeJeeves.FindMinimum(q, point, 1e-19);
-
-        } while (h(point) > MethodsConfig.Eps);
+            point = _hookeJeeves.FindMinimum(Q, point);
+            r *= r;
+            i++;
+        } while (Math.Abs(g(point) + h(point)) > MethodsConfig.EpsPB);
+        IterationInformer.Inform(i, MethodsConfig.FCalc, point, function(point));
+        MethodsConfig.FCalc = 0;
         return point;
     }
 }

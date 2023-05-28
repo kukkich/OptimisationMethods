@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using MO1;
+﻿using MO1;
 using MO2;
 using MO2.ArgMin;
 
@@ -14,21 +13,22 @@ public class HookeJeeves
         _argMinSeeker = argMinSeeker;
     }
 
-    public Point FindMinimum(Func<Point, double> function, Point point, double delta)
+    public Point FindMinimum(Func<Point, double> function, Point point)
     {
         Point prevPoint;
         do
         {
+            var delta = MethodsConfig.EpsHJ;
             do
             {
                 prevPoint = point;
                 point = ExploratorySearch(function, point, delta);
                 delta /= 2;
-            } while (prevPoint == point);
+            } while (prevPoint == point && delta > 0);
 
             point = PatternSearch(function, prevPoint, point);
         } while (!ShouldStop(function, prevPoint, point));
-        
+
 
         return point;
     }
@@ -36,8 +36,10 @@ public class HookeJeeves
     private Point ExploratorySearch(Func<Point, double> function, Point point, double delta)
     {
         var value = function(point);
+        MethodsConfig.FCalc++;
         point = FindX(function, point, delta, value);
         value = function(point);
+        MethodsConfig.FCalc++;
         point = FindY(function, point, delta, value);
 
         return point;
@@ -58,11 +60,13 @@ public class HookeJeeves
     {
         var testPoint = MoveX(point, delta);
         var testValue = function(testPoint);
+        MethodsConfig.FCalc++;
 
         if (testValue > value)
         {
             testPoint = MoveX(point, -delta);
             testValue = function(testPoint);
+            MethodsConfig.FCalc++;
             if (testValue < value)
             {
                 point = testPoint;
@@ -85,11 +89,13 @@ public class HookeJeeves
     {
         var testPoint = MoveY(point, delta);
         var testValue = function(testPoint);
+        MethodsConfig.FCalc++;
 
         if (testValue > value)
         {
             testPoint = MoveY(point, -delta);
             testValue = function(testPoint);
+            MethodsConfig.FCalc++;
             if (testValue < value)
             {
                 point = testPoint;
@@ -105,6 +111,6 @@ public class HookeJeeves
 
     private bool ShouldStop(Func<Point, double> function, Point point, Point nextPoint)
     {
-        return Math.Abs(function(nextPoint) - function(point)) < MethodsConfig.Eps;
+        return Math.Abs(function(nextPoint) - function(point)) < MethodsConfig.EpsHJ;
     }
 }
