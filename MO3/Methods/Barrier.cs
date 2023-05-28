@@ -24,8 +24,10 @@ public class Barrier
 
             point = _hookeJeeves.FindMinimum(Q, point);
             i++;
+            var v = r * g(point);
 
-        } while (Math.Abs(r * g(point)) > MethodsConfig.EpsPB);
+        } while (Math.Abs(r * g(point)) > MethodsConfig.EpsPB && !double.IsNaN(Math.Abs(r * g(point))) &&
+                 !double.IsInfinity(Math.Abs(r * g(point))));
         IterationInformer.Inform(i, MethodsConfig.FCalc, point, function(point));
         MethodsConfig.FCalc = 0;
         return point;

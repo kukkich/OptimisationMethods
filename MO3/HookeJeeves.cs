@@ -111,6 +111,8 @@ public class HookeJeeves
 
     private bool ShouldStop(Func<Point, double> function, Point point, Point nextPoint)
     {
-        return Math.Abs(function(nextPoint) - function(point)) < MethodsConfig.EpsHJ;
+        return Math.Abs(function(nextPoint) - function(point)) < MethodsConfig.EpsHJ ||
+               double.IsNaN(Math.Abs(function(nextPoint) - function(point))) ||
+               double.IsInfinity(Math.Abs(function(nextPoint) - function(point)));
     }
 }
